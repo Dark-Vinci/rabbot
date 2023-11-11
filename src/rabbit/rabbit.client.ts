@@ -8,7 +8,8 @@ export class RabbitMQClient implements OnModuleInit {
   public async onModuleInit(): Promise<void> {
     const connection = await ampq.connect({
       hostname: 'localhost',
-      port: 4000,
+      port: 3000,
+      protocol: 'ampq',
       username: 'docker',
       password: 'docker',
       vhost: '/',

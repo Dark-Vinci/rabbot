@@ -5,7 +5,7 @@ import { ConsumeMessage, connect } from 'amqplib';
 export class RabbitMQServer implements OnModuleInit {
   public async onModuleInit(): Promise<void> {
     const connection = await connect({
-      hostname: '',
+      hostname: 'localhost',
       port: 3000,
       protocol: 'ampq',
       username: 'docker',
