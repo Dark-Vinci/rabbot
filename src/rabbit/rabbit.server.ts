@@ -6,8 +6,8 @@ export class RabbitMQServer implements OnModuleInit {
   public async onModuleInit(): Promise<void> {
     const connection = await connect({
       hostname: 'localhost',
-      port: 3000,
-      protocol: 'ampq',
+      port: 5672,
+      protocol: 'amqp',
       username: 'docker',
       password: 'docker',
       vhost: '/',
@@ -15,15 +15,20 @@ export class RabbitMQServer implements OnModuleInit {
 
     const ch = await connection.createChannel();
 
-    const queue = 'queue';
+    const queue = 'rpc_queue';
 
     await ch.assertQueue(queue, { durable: false });
 
+    console.log('ON_MODULE_INIT');
+
     ch.consume(queue, async (msg: ConsumeMessage) => {
+      console.log({ msg });
       if (msg) {
-        const message = msg.content.toJSON();
+        const message = msg.content.toString();
 
         console.log(`RECIEVED MESSAGE: ${message}`);
+
+        // console.log(message.data.to)
 
         const response = `PROCESSED: ${message}`;
 
