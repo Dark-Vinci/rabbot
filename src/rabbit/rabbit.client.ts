@@ -15,8 +15,6 @@ export class RabbitMQClient implements OnModuleInit {
       vhost: '/',
     });
 
-    // const connection = await connect('amqp://docker:docker@localhost:4000');
-
     const channel = await connection.createChannel();
     this.channel ??= channel;
   }
@@ -26,7 +24,6 @@ export class RabbitMQClient implements OnModuleInit {
     message: string,
     requestId: string,
   ): Promise<any> {
-    console.log({ thi: this.channel });
     const repQ = await this.channel.assertQueue('', {
       exclusive: true,
     });
@@ -35,12 +32,8 @@ export class RabbitMQClient implements OnModuleInit {
       correlationId: requestId,
       replyTo: repQ.queue,
     });
-    console.log('sent');
-
-    // return 'published';
 
     return new Promise(async (resolve) => {
-      console.log({ ch: this.channel, red: repQ.queue });
       await this.channel.consume(
         repQ.queue,
         (msg) => {

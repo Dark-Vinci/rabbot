@@ -9,8 +9,6 @@ export class AppController {
   public async getHello(@Param() { name }: { name: string }): Promise<any> {
     const start = Date.now();
 
-    console.log({ name });
-
     const response = await this.appService.getHello(name);
 
     const duration = (Date.now() - start) / 1000;
